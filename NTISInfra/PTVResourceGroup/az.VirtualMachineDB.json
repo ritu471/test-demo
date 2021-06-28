@@ -1,0 +1,158 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string"
+        },
+        "networkInterfaceName": {
+            "type": "string"
+        },
+        "networkSecurityGroupName": {
+            "type": "string"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "virtualNetworkName": {
+            "type": "string"
+        },
+        "virtualMachineName": {
+            "type": "string"
+        },
+        "virtualMachineComputerName": {
+            "type": "string"
+        },
+        "osDiskType": {
+            "type": "string"
+        },
+        "virtualMachineSize": {
+            "type": "string"
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "secureString"
+        },
+        "zone": {
+            "type": "string"
+        },
+        "instanceNumber": {
+            "type": "string"
+        },
+         "startNumber": {
+            "type": "string"          
+        }
+    },
+    "variables": {
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
+        "vnetId": "[resourceId(resourceGroup().name,'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"  ,
+        "indexNumber": "[int(parameters('startNumber'))]",
+         "prefixZero": "[string(-0)]"    
+    },
+    "resources": [
+          {
+            "name": "[concat(parameters('networkInterfaceName'),variables('prefixZero'),copyIndex(variables('indexNumber')))]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic"
+                           
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId')]"
+                }
+            },"copy": {
+                "name":"NICcopy",
+                "count": "[int(parameters('instanceNumber'))]"            
+            },
+            "tags": {
+                "Role": "PTV",
+                "Location": "UK South",
+                "Data Classification": "Internal",
+                "Description": "postgresql DB for PTV",
+                "Technology or Software ": "RHEL 7.8",
+                "Disaster Recovery ": "No",
+                "Internet Facing ": "No",
+                "Component Type ": "NIC"
+            }
+        } ,
+        {
+            "name": "[concat(parameters('virtualMachineName'),variables('prefixZero'),copyIndex(variables('indexNumber')))]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2017-12-01",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+               "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'),variables('prefixZero'),copyIndex(variables('indexNumber')))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachineSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('osDiskType')]"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "RedHat",
+                        "offer": "RHEL",
+                        "sku": "7.8",
+                        "version": "latest"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'),variables('prefixZero'),copyIndex(variables('indexNumber'))))]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[parameters('virtualMachineComputerName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                }
+            },"copy": {
+                "name":"VMCcopy",
+                "count": "[int(parameters('instanceNumber'))]"
+            },
+            "tags": {
+                "Role": "PTV",
+                "Location": "UK South",
+                "Data Classification": "Internal",
+                "Description": "postgresql DB for PTV",
+                "Technology or Software ": "RHEL 7.8",
+                "Disaster Recovery ": "No",
+                "Internet Facing ": "No",
+                "Component Type ": "Virtual Machine"
+            },
+            "identity": {
+                "type": "systemAssigned"
+            },
+            "zones": [
+                "[parameters('zone')]"
+            ]
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "string",
+            "value": "[parameters('adminUsername')]"
+        }
+    }
+}

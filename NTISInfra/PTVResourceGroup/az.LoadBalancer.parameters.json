@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "uksouth"
+        },
+        "name": {
+            "value": "ilb-uks-dev-01"
+        },
+        "sku": {
+            "value": "Basic"
+        },
+        "subnetName": {
+          "value": "snet-uks-dev-ptv"
+        },
+        "virtualNetworkName": {
+          "value": "vnet-uks-dev-ptv"
+        },
+        "privateIPAllocationMethod": {
+            "value": "Dynamic"
+        }
+    }
+}

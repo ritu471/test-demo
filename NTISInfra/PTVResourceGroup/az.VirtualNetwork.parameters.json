@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "value": "#arm-vnetname#"
+        },
+        "subnetName": {
+            "value": "#arm-subnetname#"
+        },        
+        "location": {
+            "value": "#arm-location#"
+        },
+        "networkSecurityGroupName": {
+          "value": "vm-uks-dev-ptv-nsg"
+        },
+        "networkSecurityGroupRules": {
+          "value": []
+        }
+    }
+}

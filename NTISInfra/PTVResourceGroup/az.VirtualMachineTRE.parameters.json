@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location": {
+        "value": "uksouth"
+      },
+      "networkInterfaceName": {
+        "value": "vm-uks-dev-ptvtre-nic"
+      },
+      "networkSecurityGroupName": {
+        "value": "vm-uks-dev-ptv-nsg"
+      },
+      "subnetName": {
+        "value": "snet-uks-dev-ptv"
+      },
+      "virtualNetworkName": {
+        "value": "vnet-uks-dev-ptv"
+      },
+      "virtualMachineName": {
+        "value": "vm-uks-dev-ptvtre"
+      },
+      "virtualMachineComputerName": {
+        "value": "vm-uks-dev-ptvtre"
+      },
+      "osDiskType": {
+        "value": "Premium_LRS"
+      },
+      "virtualMachineSize": {
+        "value": "Standard_F16s_v2"
+      },
+      "adminUsername": {
+        "value": "ntis-admin"
+      },
+      "adminPassword": {
+        "value": "R1verside&!#"
+      },
+      "zone": {
+        "value": "2"
+      },      
+         "startNumber": {
+            "value": "01"        
+        },
+        "instanceNumber": {
+          "value": "1"  
+      }
+    }
+  }

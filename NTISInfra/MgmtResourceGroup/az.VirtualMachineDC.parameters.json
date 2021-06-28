@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "uksouth"
+    },
+    "networkInterfaceName": {
+      "value": "vm-uks-mgmt-dc"
+    },
+    "networkSecurityGroupName": {
+      "value": "vm-uks-mgmt-dc-01-nsg"
+    },
+    "networkSecurityGroupRules": {
+      "value": []
+    },
+    "subnetName": {
+      "value": "snet-uks-mgmt-domainserv"
+    },
+    "virtualNetworkName": {
+      "value": "vnet-uks-mgmt-dom"
+    },
+    "virtualMachineName": {
+      "value": "vm-uks-mgmt-dc"
+    },
+    "virtualMachineComputerName": {
+      "value": "vm-uks-mgmt-dc"
+    },
+    "osDiskType": {
+      "value": "Premium_LRS"
+    },
+    "virtualMachineSize": {
+      "value": "Standard_D2s_v3"
+    },
+    "adminUsername": {
+      "value": "ntis-admin"
+    },
+    "adminPassword": {
+      "value": "R1verside&!#"
+    },
+    "patchMode": {
+      "value": "AutomaticByOS"
+    },
+    "enableHotpatching": {
+      "value": false
+    },
+    "zone": {
+      "value": "2"
+    },
+    "startNumber": {
+      "value": "02"
+    },
+    "instanceNumber": {
+      "value": "2"
+    }
+  }
+}
